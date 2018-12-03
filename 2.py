@@ -1,0 +1,287 @@
+from collections import Counter
+
+def run(x):
+    count_2 = 0
+    count_3 = 0
+
+    lines = x.splitlines()
+    for l in lines:
+        cnt = Counter()
+        for letter in l:
+            cnt[letter] += 1
+        found_3 = False
+        found_2 = False
+        for letter in cnt:
+            if cnt[letter] == 2:
+                found_2 = True
+            if cnt[letter] == 3:
+                found_3 = True
+
+        if found_2:
+            count_2 += 1 
+        if found_3:
+            count_3 += 1
+
+        # debugging
+        print(l)
+        print(cnt)
+        print("found_2", found_2)
+        print("found_3", found_3)
+
+    print("count_2", count_2)
+    print("count_3", count_3)
+    print("result = ", count_2 * count_3)
+
+input = """mvgowxqubnhaefjslkjlrptzyi
+pvgowlqubnhaefmslkjdrpteyi
+ovgowoqubnhaefmslkjnrptzyi
+cvgowxqubnrxefmslkjdrptzyo
+cvgowxqubnhaefmsokjdrprzyf
+cvgowxqubnhjeflslkjgrptzyi
+cvgowxqvbnhaefmslkhdrotzyi
+hvgowxqmbnharfmslkjdrptzyi
+cvgoaxqubqhaefmslkjdrutzyi
+cvxowxqdbnhaefmslkjdgptzyi
+cvgikxqubnhaefmslkjdrptzyz
+cvgnwxqubnhaqfjslkjdrptzyi
+cqgowxqubnhaecmslkjgrptzyi
+cvpowxqucnhaefmslkjdrptzyz
+fvuoexqubnhaefmslkjdrptzyi
+svgowxqubnhaefmsvkjdrttzyi
+cvgowxqubnhaefmblkjdfpbzyi
+cvkoyxqubnhaefsslkjdrptzyi
+bvgowxqublhaefmslkjdrptzfi
+xvgewxqubnhaefmslkjdrztzyi
+cvgowxqubzhaefmslkkrrptzyi
+cvgowxqubnhaefmslkudruuzyi
+cvgowxqubnhaefmvlkjdrptwyl
+cvgoyxqubnhaefmslkjvrotzyi
+cvgowxoubnhaewmslkjdrpbzyi
+cvgowxgubnhaefmslijdrptzxi
+lvgowxqkbnhaefmslkjdrptzqi
+xvgowxqubyhaefmflkjdrptzyi
+wvnowxgubnhaefmslkjdrptzyi
+cvgowxguwnhaefhslkjdrptzyi
+cvgowfquxnhaefmdlkjdrptzyi
+cvgywxqubnuaefmsldjdrpfzyi
+cvkowxqzbrhaefmslkjdrptzyi
+cviowxzubnhaefmslkjdrptqyi
+cvgowxqubnhaefmsozjdrptzyc
+cvglwxuubnhaewmslkjdrptzyi
+cvgowxquknhaebmsfkjdrptzyi
+vvgowxqubnhaesmslkjdrptzri
+cvgowxoubndaefmslkjdrftzyi
+cvgowxqubghaefmslkjdeptzyw
+cvgowxqubnhaetmhlkjdrpvzyi
+cvgowmquunhaefmslkjdrptzyt
+cvgooxqpbniaefmslkjdrptzyi
+cvgowxqubnhaeumslkjdkptiyi
+cvgrwxqsbnhaemmslkjdrptzyi
+cvrowxqubnhaefmslkjdrctcyi
+dvgcwxqubnhaefmslkjdrptzyq
+cugowxqubnhasfmmlkjdrptzyi
+cwgowxqobzhaefmslkjdrptzyi
+cvgowxquwnhaefmulkjdrptbyi
+nvgowxqmbnhaefmslyjdrptzyi
+cvgowxqubniakvmslkjdrptzyi
+cvyowxqubnhaefmslejdrptzyx
+cvgobxqubghaefeslkjdrptzyi
+cvgowxiubnhaebmslkjdfptzyi
+cvgosbqubnhaefmslkvdrptzyi
+cvgpwxqubnhaefvslkjdrptzyh
+cvgowxqubnyaefmslgjdsptzyi
+cvgowxqubnhaefmslkjdrprzzp
+cvgowxqubwhaemmslkjdrpazyi
+cvgowxqpbnhaemmslkjdrpczyi
+cvgoqxqubnhaelmslkjdrptzye
+cvgowxqubnhaefmslbjdrttzvi
+cvgowxqubnhlefmslkvurptzyi
+cvgowxqujngaefmslktdrptzyi
+cvgowxqubnhaefmsckjdcwtzyi
+cvcowxqubnhaetmslkjorptzyi
+jvnowxqubnhaefmslkjdrptzyf
+cygowxqkbnhaefmslejdrptzyi
+cvmowxqubnhaefmslkjdritzoi
+cvgowxqubnpaefmslkjdrpnnyi
+cvgowxqubnhaefmolkjdrpnzyy
+uvgowxoubnhaefmslkjdrptzvi
+cvgowxbabehaefmslkjdrptzyi
+cvgokxqubnhaefmsckjdrjtzyi
+cvgoxwqubahaefmslkjdrptzyi
+cvgowxqusnhaefmslijdrptyyi
+cvgowxqubmhaeqmslkxdrptzyi
+cvgouxhubnhaefmslkjdrjtzyi
+cvgowxqubnhaefmslrjdqptzyk
+cvgowxiublhaefsslkjdrptzyi
+cvgowxqubnxgefmslkadrptzyi
+ovgowxqugshaefmslkjdrptzyi
+cvgowxquznhaeemslsjdrptzyi
+cvkowxqubnhaeomslkjdeptzyi
+cvgvwxqubxhaefmslkjdrptzyu
+cvglwxqybnhaefmslkjdrptzyb
+cvgowxqubnlfwfmslkjdrptzyi
+cvaowxqubnhaefmslkjdrvtzbi
+cvgowxqubnrmefaslkjdrptzyi
+cvgowxqubnhaefmsnkjdfpwzyi
+cvgawxqmbnhaefmsykjdrptzyi
+chgowmqubnhaefmslkjdrptwyi
+cogowxqubnhaefmslkjxrptzri
+cvgohxqubnoaesmslkjdrptzyi
+cvdowxqubnhaofmslkjdrpvzyi
+vvgowrqubnhaefmslkjdrpthyi
+cvgowxquknhuefmslkjdoptzyi
+cvyowxeubnhaefmslhjdrptzyi
+cvglwxqubnhaefmslkjdrptdyq
+cvgowxqubnhaefmsikgdrptayi
+cvgowxqubnhaefjhlkjdrpczyi
+cvgzwxkubnhaefmslkjdjptzyi
+cxgowxqubnhaefmslkjdrptwyy
+cvgowxqubnhaefeslkjdrmqzyi
+cvgowxvubnhaefmilijdrptzyi
+cvgowxqzbthaeomslkjdrptzyi
+cvgowhqubndaefmglkjdrptzyi
+cvgowxvubnhaeamylkjdrptzyi
+cvgowiqubnhgefmslkjdrctzyi
+cvgowxqubchaefmslksdritzyi
+cvgowxqubnhaefmsnkjdreyzyi
+cvgowxqubihaefmslkgdrutzyi
+cvgowxqjbnhaeamslkjdrptzwi
+cvgowxzubnhaefmsxkjdrrtzyi
+cvgowxqubyhaetmslnjdrptzyi
+cvgowxquhnhaebmslkjdxptzyi
+cvgowxqubnhanfmslujdxptzyi
+cvgowxqublhnefaslkjdrptzyi
+cvgmwxqtbnhaefmslkjsrptzyi
+jvgowxqubnhaeamslkjdrpmzyi
+cvgowxqubhiaefmsljjdrptzyi
+svgowxqubnhaefmswkjdrpozyi
+cvgowxqebnhaeqmslkjdiptzyi
+cveowxqubnhayzmslkjdrptzyi
+cvglwxqubnhaefmxlkjdiptzyi
+cvgowkqubdhaefmszkjdrptzyi
+cvgowxkxbnhaeffslkjdrptzyi
+cugowxqubnnaefmslujdrptzyi
+cqgowxwubnhaepmslkjdrptzyi
+cvgowxqubnhayfmmlkjwrptzyi
+cvgowxquenhaefmsskxdrptzyi
+cvgowxqubnhiefmsrkjdtptzyi
+mvgowxkubnhaefmjlkjdrptzyi
+cvgowkquunhaefmglkjdrptzyi
+cvgowxqubqhaexmslgjdrptzyi
+jvgowxqubnhaefmslkjddptlyi
+cvgiwxqubnhaefmslkjdpptmyi
+czgowxqubntaevmslkjdrptzyi
+cvgotmqubnhaefmslkjdrpazyi
+cvgowxtubnhaefmslkqdtptzyi
+cvbowxqhnnhaefmslkjdrptzyi
+cvgowkqubshaefmstkjdrptzyi
+cvgowqqrbnaaefmslkjdrptzyi
+cvgoixqubnhaefmslkjdrpmryi
+cvgoxxqubnhaeimsxkjdrptzyi
+cvgowxqubzhaebmslkjyrptzyi
+cjgewxqubnhaefsslkjdrptzyi
+cvgowxqdbnkaefmslwjdrptzyi
+cvgowxqzbnhaeamslkjdrftzyi
+cvgoixqubnsaewmslkjdrptzyi
+cvgswxqubnhaxfmslkjdrptzni
+cvwowxmubnhgefmslkjdrptzyi
+cvggwxqubnhaefmslqjdbptzyi
+cvgzwxqjbnhaefaslkjdrptzyi
+cvgowzqubnharfmspkjdrptzyi
+cvgowxqubnhawfmslkjdeptzyb
+cvuowequbnhaefmslkjdrntzyi
+gvgowxqubnxaefmslkjdrjtzyi
+cvgowxqubnhmetmsldjdrptzyi
+cvgowxqubnhamfmsqkjdrptyyi
+cvgoqxqubnhaefmslkjtrpazyi
+cvgoexqubhhaefmslkjdrhtzyi
+cvgowwqubnhaeflslkjdrptzyf
+cvgowlpubnhaefmslkjdrptvyi
+cvgowxouunhaebmslkjdrptzyi
+cvdowhqubnhaefmslijdrptzyi
+cvgowxqubnkatfmslkjdrhtzyi
+cvgowxqpbnhxeumslkjdrptzyi
+cvgowxqubnhaefmsukjjrptzyn
+cvgowxqubnhmefmslzjdrvtzyi
+cvtowxqubihaefmclkjdrptzyi
+chgowcqubnhayfmslkjdrptzyi
+cvguwxqubnhaefmblkjarptzyi
+cvgowoqubnhaefmsikjdrytzyi
+cvgkwxqubnhaefmslkjdrptchi
+cvhowxqubnhaefmslkjdrvlzyi
+cvlowxfubnhaefmslkjkrptzyi
+cvgowxqubhhaefoslkjdrytzyi
+cvgowxsubqhaefmslpjdrptzyi
+cvgowxpubnhaefmslhjdrptzyb
+cvgowxqubnhrefmjlkddrptzyi
+cvgowxqubnhaxfmykkjdrptzyi
+mvgowxqubnhakfmslkjdrptnyi
+cwgowxqubnhaffmslkadrptzyi
+chgowxquwnhaefmslsjdrptzyi
+cvgowxqubnhaefmslkjdwpnsyi
+cvgawxqubnhaefmslkldyptzyi
+cvgowxqubnhiefmslkjdiprzyi
+cvgkqxqubnhaefcslkjdrptzyi
+cvgovoqubnhaefmslkjdrpuzyi
+cvgowxqubnhaefmszkjdrjtzyk
+cvgopxqubnhaefmslkjdqpnzyi
+cvgtwxqubnhaefmslkjnrptzri
+cvgowxqurnhaedmslfjdrptzyi
+cvpowxqubnhaefmswkjdrltzyi
+cvgowxqujnpaefmslkjdrptdyi
+cvgowgqubnhzifmslkjdrptzyi
+lvgowxqubnhaenmslkjdbptzyi
+ebgowxqubnhaeymslkjdrptzyi
+cvgowxtubqhaefmslkedrptzyi
+cvgowxqubshaesmslkjdrptryi
+cvgowxqubnhaefmflkjmrpkzyi
+cvgowxqubngaefmslkjdrytzgi
+cvgowxqubnhaefmslklhzptzyi
+cveowxqubnhgefmslkjdrpezyi
+cvgowxqubnhaeomslkjdrqtzym
+cvgowxqubzhaefmslwjdrptfyi
+cmgowxqubnhaefmsdkjdrptzui
+cvlowxqubnhaefmslsjdrptzwi
+cvhowxpubnhaefmslkjhrptzyi
+cveosxqurnhaefmslkjdrptzyi
+cvgowxqubnhaefgsdkjdrptjyi
+cvgvwxqubnhaefmslzjdmptzyi
+cviowxqubnhalfmslkjdrptzyr
+cvgowxqubchqefmslkjdrptzoi
+cvgownqubnhaefmsyktdrptzyi
+cvgywxqubnuaefmslkjdrpfzyi
+cvgobxqunnhaefmslkjdrptzbi
+cvgowxqubshaefgslkjdrxtzyi
+cvghwxqubnhaefmslkjdrbtmyi
+cvhowxqubnhaefmslkjdrpnzys
+cvgowxqubnmaefmslejdrptzyq
+cvmrwxqubnhaefmslkjdrpzzyi
+cvgowxqubshaefmslkfdrptzyu
+cvgowqqubnhaefmslkodrpjzyi
+cvgnwnquknhaefmslkjdrptzyi
+cvgowxquxnhacfmflkjdrptzyi
+ovgowxqubnhaefmslkjmrmtzyi
+cvgowxqubneaefmslkedrptzqi
+cvgowxqubphweflslkjdrptzyi
+cvgowxqudnhaefmplkjdrptdyi
+cvwowxbubnhaefmslkjurptzyi
+cvgowxtubnhaefmslkjdrwwzyi
+cvgowxqubnhkefmslajdrptzyn
+cvgowxqxbphaefmslkjdrptzsi
+cvgowxquenhaefmslmjwrptzyi
+zvgowdqubnhaeftslkjdrptzyi
+csgowxqubnhgefmslkjdrptzyy
+cvgolxqubahaefmslkjdrpvzyi
+cvgoqxquhwhaefmslkjdrptzyi
+cvgawxqubghaefmsrkjdrptzyi
+cvgozxqubnhaefmslkwdfptzyi
+cvgowxqubnhaefmslhjdkptzzi
+cvnowxqubnhaefmsqkjdrptqyi
+cvpowxqubnhaefmslkpdrptdyi
+cvgowxoubnhaermslkjdrctzyi
+cvgowxqubnheefmslkjdrctzyr
+cvgowxqunnhaqfhslkjdrptzyi
+cvgowxqulnhaefmslrjdrntzyi"""
+
+run(input)
+
