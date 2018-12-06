@@ -87,7 +87,7 @@ def do(inp):
         for idx_c, c in enumerate(r):
             val = square[idx_r][idx_c]
             cnt[val] += 1 
-            if idx_r == 0 or idx_r == (len(square) -1):
+            if idx_r == 0 or idx_r == (len(square) -1) or idx_c == 0 or idx_c == (len(square) -1):
                 to_ignore.add(val)
 
     exp_cnt_total = square_size**2
@@ -106,8 +106,6 @@ def do(inp):
     print("CLEANed UP OUTPUT... sorted")
     print(cnt)
 
-    # TODO: Throw away if at edge
-    # TODO: Why was top one d-q??
     # size of grid = 0,0 => max_x, max_y
     out = ""
 
