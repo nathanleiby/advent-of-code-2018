@@ -11,13 +11,18 @@ actual = (470, 72170)
 # Speed optimization ideas
 # - [x] use native python insert => 1.5x to 2x speed increase
 # - [x] use native python del(list[idx]) => no improvement
-# - [ ] pre-allocate memory, then fill it in 
+# - [x] save the idx rather than re-computing it on each round (linear => constant)
+#   - [x] for the non-mod 23 step => 10x speed improvement
+#   - [x] for the mod 23 step => 1.5x speed bump
+# - [ ] pre-allocate memory, then fill it in
+# - [ ] use a different list data structure, e.g. np.array
+# - [ ] use a different data structure altogether
 
 from collections import Counter
 def play(num_players,last_marble):
     marbles = [0]
     marble_number = 0
-    current_marble = 0
+    cm_idx = 0
     current_player = 0
     player_scores = Counter()
     for p in range(num_players):
@@ -26,39 +31,31 @@ def play(num_players,last_marble):
     lm_points = -1
     # until we've hit the last marble
     while lm_points != last_marble:
-        #print(lm_points)
         # update marble number
         marble_number += 1
 
         # iterate through the players
         current_player = (current_player + 1) % num_players
 
-
-        cm_idx = marbles.index(current_marble)
+        current_marble = marbles[cm_idx]
         if (marble_number % 23 == 0):
             # do a scoring move
             seven_left_idx = (cm_idx - 7) % len(marbles)
             val = marbles[seven_left_idx]
             player_scores[current_player] += (marble_number + val)
 
-            # update current marble
-            current_marble = marbles[(seven_left_idx + 1) % len(marbles)]
             # remove seven-left marble
             marbles = marbles[:seven_left_idx] + marbles[seven_left_idx+1:]
-
+            cm_idx = (seven_left_idx) % len(marbles)
         else:
             # do a normal move
             left_of_new = (cm_idx + 1) % len(marbles)
             if left_of_new == len(marbles) - 1:
-                # TODO: efficiency?
                 marbles += [marble_number]
+                cm_idx = len(marbles) - 1
             else:
-                # marbles = marbles[:left_of_new+1] + [marble_number] + marbles[left_of_new+1:]
-                # 1.6x speedup
-                marbles.insert(left_of_new+1, marble_number)
-
-            current_marble = marble_number
-
+                cm_idx = left_of_new+1
+                marbles.insert(cm_idx, marble_number)
 
         lm_points = marble_number
         
