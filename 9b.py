@@ -15,12 +15,22 @@ actual_100x = (470, 7217000)
 # - [x] save the idx rather than re-computing it on each round (linear => constant)
 #   - [x] for the non-mod 23 step => 10x speed improvement
 #   - [x] for the mod 23 step => 1.5x speed bump
-# - [ ] use a different list data structure, e.g. np.array .. collections.deque? skiplist?
+# - [ ] use a different list data structure, e.g. np.array .. collections.deque? skiplist? doubly-linked list?
 # - [ ] pre-allocate memory, then fill it in
-# - [ ] use a different data structure altogether
+# - [ ] use a different data structure altogether .. 
+
+
+class Marble:
+    def __init__(self, val, prev, next):
+        self.val = val
+        self.prev = prev
+        self.next = next
+
+    def __str__(self):
+        return "Marble Val={} Prev={} Next={}".format(self.val, self.prev.val, self.next.val)
+
 
 from collections import Counter
-from collections import deque
 def play(num_players,last_marble):
     marbles = [0]
     marble_number = 0
@@ -30,8 +40,16 @@ def play(num_players,last_marble):
     for p in range(num_players):
         player_scores[p] = 0
 
+    # 0-marble
+    x = Marble(0, "todo", "todo")
+    x.prev = x
+    x.next = x
+
+    current_marble = x
+
     # until we've hit the last marble
     while marble_number != last_marble:
+        # print_doubly_linked(x)
         # update marble number
         marble_number += 1
         if marble_number % 10000 == 0:
@@ -40,31 +58,46 @@ def play(num_players,last_marble):
         # iterate through the players
         current_player = (current_player + 1) % num_players
 
-        current_marble = marbles[cm_idx]
-        if (marble_number % 23 == 0):
+        if (marble_number != 0 and marble_number % 23 == 0):
             # do a scoring move
-            seven_left_idx = (cm_idx - 7) % len(marbles)
-            val = marbles[seven_left_idx]
+            seven_left = current_marble.prev.prev.prev.prev.prev.prev.prev
+
+            val = seven_left.val
             player_scores[current_player] += (marble_number + val)
 
+            # update current marble
+            current_marble = seven_left.next
+
             # remove seven-left marble
-            marbles = marbles[:seven_left_idx] + marbles[seven_left_idx+1:]
-            cm_idx = (seven_left_idx) % len(marbles)
+            seven_left.prev.next = seven_left.next
+            del(seven_left)
         else:
-            # do a normal move
-            left_of_new = (cm_idx + 1) % len(marbles)
-            if left_of_new == len(marbles) - 1:
-                marbles += [marble_number]
-                cm_idx = len(marbles) - 1
-            else:
-                cm_idx = left_of_new+1
-                marbles.insert(cm_idx, marble_number)
+
+            was_next = current_marble.next
+            was_next_next = current_marble.next.next
+
+            # add new marble
+            new_n = Marble(val=marble_number, prev=was_next, next=was_next_next)
+            was_next.next = new_n
+            was_next_next.prev = new_n
+
+            current_marble = new_n
+
         
     # get max score
     player, score = player_scores.most_common()[0]
     return score
 
 
+def print_doubly_linked(x):
+    cur_node = x
+    out = []
+    while True:
+        out.append(cur_node.val)
+        cur_node = cur_node.next
+        if cur_node.val == 0:
+            break
+    print("L: ", "  ".join(map(str, out)))
 
 for e in examples:
     ex_i, ex_o = e[0], e[1]
