@@ -7,6 +7,7 @@ examples = [
 ]
 
 actual = (470, 72170)
+actual_100x = (470, 7217000)
 
 # Speed optimization ideas
 # - [x] use native python insert => 1.5x to 2x speed increase
@@ -14,11 +15,12 @@ actual = (470, 72170)
 # - [x] save the idx rather than re-computing it on each round (linear => constant)
 #   - [x] for the non-mod 23 step => 10x speed improvement
 #   - [x] for the mod 23 step => 1.5x speed bump
+# - [ ] use a different list data structure, e.g. np.array .. collections.deque? skiplist?
 # - [ ] pre-allocate memory, then fill it in
-# - [ ] use a different list data structure, e.g. np.array
 # - [ ] use a different data structure altogether
 
 from collections import Counter
+from collections import deque
 def play(num_players,last_marble):
     marbles = [0]
     marble_number = 0
@@ -28,11 +30,12 @@ def play(num_players,last_marble):
     for p in range(num_players):
         player_scores[p] = 0
 
-    lm_points = -1
     # until we've hit the last marble
-    while lm_points != last_marble:
+    while marble_number != last_marble:
         # update marble number
         marble_number += 1
+        if marble_number % 10000 == 0:
+            print("\t ... {}".format(marble_number))
 
         # iterate through the players
         current_player = (current_player + 1) % num_players
@@ -56,8 +59,6 @@ def play(num_players,last_marble):
             else:
                 cm_idx = left_of_new+1
                 marbles.insert(cm_idx, marble_number)
-
-        lm_points = marble_number
         
     # get max score
     player, score = player_scores.most_common()[0]
@@ -73,3 +74,4 @@ for e in examples:
     assert(res == ex_o)
 
 print("RESULT => ", play(actual[0],actual[1]))
+print("RESULT NEW => ", play(actual_100x[0],actual_100x[1]))
