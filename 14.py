@@ -1,7 +1,11 @@
 DEBUG = False
 def print_recipes(recipes, elf1, elf2):
+    if not DEBUG:
+        return
     out = ""
     for idx, rec in enumerate(recipes):
+        if rec == None:
+            break
         l = r = " "
         if idx == elf1:
             l = "("
@@ -10,22 +14,23 @@ def print_recipes(recipes, elf1, elf2):
             l = "["
             r = "]"
         out += (l + str(rec) + r)
-    if DEBUG:
-        print(out)
+    print(out)
 
 import time
 
 def res(input, expected=None):
     # QUALITY: 0-9
     # current recipe is an index in the array
-    recipes = [3, 7]
     elf1 = 0
     elf2 = 1
 
     iters = 0
     start = time.time()
     iter_start = start
-    while len(recipes) < input+10:
+
+    recipes = [3,7] + ([None] * (input+100))
+    num_recipes = 2
+    while num_recipes < input+10:
         iters += 1
         if iters % 1000 == 0:
             now = time.time()
@@ -33,17 +38,20 @@ def res(input, expected=None):
             total_elapsed = now - start
 
             iter_start = now
-            print("iters:", iters, "   # recipes = ", len(recipes), " iter time={:.1f}s (total = {:.1f}s)".format(elapsed, total_elapsed))
+            print("iters:", iters, "   # recipes = ", num_recipes, " iter time={:.1f}s (total = {:.1f}s)".format(elapsed, total_elapsed))
         print_recipes(recipes, elf1, elf2)
+
         # COMBINE (sum scores), then create a new recipe with score of each digit
         combined = recipes[elf1] + recipes[elf2]
         c_str = str(combined)
         new_recipes = list(map(int, [x for x in c_str]))
-        recipes += new_recipes
+        for n_idx, n in enumerate(new_recipes):
+            recipes[num_recipes+n_idx] = n
+        num_recipes = num_recipes + len(new_recipes)
 
         # step forward (1 + number of current recipe), looping if needed
-        elf1 = (elf1 + 1+ recipes[elf1]) % len(recipes)
-        elf2 = (elf2 + 1+ recipes[elf2]) % len(recipes)
+        elf1 = (elf1 + 1+ recipes[elf1]) % num_recipes
+        elf2 = (elf2 + 1+ recipes[elf2]) % num_recipes
 
     print_recipes(recipes, elf1, elf2)
 
